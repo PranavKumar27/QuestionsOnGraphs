@@ -1,8 +1,6 @@
 #include <iostream>
 #include <vector>
-#include <map>
-#include <bits/stdc++.h>
-#include <algorithm>
+#include <queue>
 
 using namespace std;
 
@@ -20,112 +18,80 @@ public:
     {
         Adj[u].push_back(v);
     }
-    void kahnsAlgo(vector<int>& res)
+
+    void generateInDegree(vector<int>& in)
     {
-        //Find Frequency of each node
-        map<int,int> outdegree;
+        in.resize(V,0);
         for(int i=0;i<V;i++)
         {
-            cout << "i=" << i << endl;
-            bool NotFound = false;
-            for(int j=0;j<V;j++)
+            for(auto adjacent:Adj[i])
             {
-                cout << "j=" << j << endl;
-               if(find(Adj[j].begin(),Adj[j].end(),i) == Adj[j].end())
-                {
-                    NotFound = true;
-                }
-                else
-                {
-                    cout << "Found i=" << i << " on index j=" << j << endl;
-                    NotFound = false;
-                    outdegree[i] = 1;
-                    break;
-                }
-            }
-
-            cout << "NotFound= " << NotFound << endl;
-            //outdegree[i]=0;
-            if(NotFound == true)
-            {
-                outdegree[i]=0;
-            }
-            else
-            {
-                for(auto adjacent:Adj[i])
-                {
-                    cout << "adjacent=" << adjacent << endl;
-                    if(outdegree.find(adjacent)!=outdegree.end())
-                    {
-                        outdegree[adjacent]=outdegree[adjacent]+1;
-                    }
-                    cout << "outdegree of adjacenet=" << outdegree[adjacent] << " adjacent=" << adjacent << endl;
-                }
+                in[adjacent]++;
             }
         }
-
-        cout << "Outdegree Calculated" << endl;
-        for(auto o:outdegree)
-        {
-            cout << o.first << "\t" << o.second << endl;
-        }
-
-        cout << endl;
-
-        sortByValue(outdegree,res);
-
-
-
+        cout << "InDegree" << endl;
+        print_v(in);
     }
-/*
-    bool cmp(pair<int,int>& a, pair<int,int>& b)
+
+    void print_v(vector<int> v)
     {
-        if(a.second < b.second)
-            return true;
-        //else
-            //return false;
-    }*/
-
-    bool cmp(pair<string, int>& a,
-        pair<string, int>& b)
-{
-    return a.second < b.second;
-}
-    void sortByValue(map<int,int>& outdegree,vector<int>& res)
-    {
-        vector<pair<int,int>> A;
-
-        for(auto& m:outdegree)
-        {
-            A.push_back(m);
-        }
-
-        sort(A.begin(),A.end());
-
-        cout << "Sorted Outdegree" << endl;
-        for(auto& x:A)
-        {
-            cout << x.first << "\t" << x.second << endl;
-            res.push_back(x.first);
-        }
-
-        reverse(res.begin(),res.end());
         cout << endl;
+
+        for(int i=0;i<v.size();i++)
+            cout << i << "\t" << v[i] << endl;
+        cout << endl;
+    }
+    void KahnsAlgo(vector<int>& res,vector<int> in)
+    {
+        queue<int> q;
+        for(int i=0;i<V;i++)
+        {
+            if(in[i]==0)
+            {
+                q.push(i);
+            }
+
+        }
+
+        while(!q.empty())
+        {
+            int node = q.front();
+            q.pop();
+            res.push_back(node);
+
+            // find Adjacent and reduce the in degree
+            for(auto adjacent:Adj[node])
+            {
+                in[adjacent]--;
+                if(in[adjacent]==0)
+                {
+                    q.push(adjacent);
+                }
+            }
+
+        }
+
+        print_v(res);
     }
 };
 
 int main()
 {
-    graph g(5);
+    graph g(6);
 
     g.addEdge(0,1);
-    g.addEdge(1,2);
-    g.addEdge(2,0);
-    g.addEdge(3,0);
+    g.addEdge(0,2);
+    g.addEdge(1,3);
+    g.addEdge(2,3);
+
+    g.addEdge(3,4);
+    g.addEdge(3,5);
+
+    vector<int> in;
+    g.generateInDegree(in);
 
     vector<int> res;
-    g.kahnsAlgo(res);
-
+    g.KahnsAlgo(res,in);
 
     for(auto x:res)
         cout << x << "\t";
