@@ -3,8 +3,6 @@
 
 using namespace std;
 
-// Start Time 8.45 PM
-
 class graph
 {
     int V;
