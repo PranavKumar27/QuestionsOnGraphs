@@ -92,3 +92,122 @@ int main()
 
     return 0;
 }
+
+
+// Modified Code : To handle Not Connected Graphs as well
+
+#include <iostream>
+#include <vector>
+#include <limits.h>
+
+using namespace std;
+
+class graph
+{
+    int V;
+    vector<vector<pair<int,int>>>Adj;
+public:
+    graph(int e)
+    {
+        V=e;
+        Adj.resize(V);
+    }
+    void addEdge(int u,int v,int wt)
+    {
+        Adj[u].push_back({v,wt});
+    }
+    bool bellmanFord(vector<int> &dist,int s)
+    {
+        dist.resize(V,INT_MAX);
+        dist[s] = 0;
+        int n=V;
+        for(int i=0;i<n-1;i++)
+        {
+            for(int u=0;u<V;u++)
+            {
+                for(auto adjacent:Adj[u])
+                {
+                    int v = adjacent.first;
+                    int wt = adjacent.second;
+                    cout << "u=" << u << " v=" << v << " wt=" << wt << endl;
+                    cout << "dist[u]=" << dist[u] << " wt=" << wt << " dist[v]=" << dist[v] << endl;
+                    if(dist[u]!=INT_MAX && dist[u]+wt<dist[v])
+                    {
+                        dist[v] = dist[u]+wt;
+                        cout << " dist[v]=" << dist[v] << endl;
+                    }
+                }
+            }
+        }
+        print_v(dist);
+
+
+        for(int u=0;u<V;u++)
+        {
+            for(auto adjacent:Adj[u])
+            {
+                int v = adjacent.first;
+                int wt = adjacent.second;
+                if(dist[u]!=INT_MAX && dist[u]+wt<dist[v])
+                {
+                    cout << "True Set" << endl;
+                    return true;
+                }
+            }
+        }
+        print_v(dist);
+
+    cout << __FUNCTION__ << endl;
+        return false;
+
+    }
+    void print_v(vector<int> v)
+    {
+        for(auto val:v)
+            cout << val << "\t";
+        cout << endl;
+    }
+};
+
+int main()
+{
+    int v = 5;
+    graph g(v);
+    g.addEdge(1,2,2);
+    g.addEdge(1,4,-12);
+    g.addEdge(3,1,-10);
+    g.addEdge(2,3,6);
+    g.addEdge(4,3,4);
+
+
+    vector<int> dist;
+
+    vector<bool> visited;
+    visited.resize(v,false);
+
+    for(int i=0;i<v-1;i++)
+    {
+        if(visited[i]==false)
+        {
+            cout << "Calling Bellman Ford on Node =" << i << endl;
+            int ans = g.bellmanFord(dist,i);
+            if(ans)
+            {
+                cout << "A NEGATIVE CYCLE DETECTED" << endl;
+                break;
+            }
+
+        }
+
+        for(int j=0;j<v;j++)
+        {
+            if(dist[j]!=INT_MAX)
+            {
+                visited[j] = true;
+            }
+        }
+    }
+
+
+    return 0;
+}
