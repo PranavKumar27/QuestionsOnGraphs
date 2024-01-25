@@ -63,7 +63,7 @@ public:
         vector<int> dist;
         dist.resize(V,INT_MAX);
         int s = 0;
-        dist[topoSort[0]] = 0;
+        dist[topoSort[0]] = 0; // Very Important Step, Start from Node whose indegree is 0 or Most independent Node
         for(int i=0;i<V;i++)
         {
             int node = topoSort[i];
