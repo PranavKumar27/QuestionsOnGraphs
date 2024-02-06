@@ -27,6 +27,8 @@ public:
         dist.resize(V,INF);
         dist[src] = 0;
         q.push({src,dist[src]});
+        vector<int> pred;
+        pred.resize(V,-1);
 
         while(!q.empty())
         {
@@ -38,9 +40,12 @@ public:
                 break;
             for(auto v:Adj[u])
             {
-                dist[v] = min(dist[v],wt+1);
-                q.push({v,dist[v]});
-
+                if(dist[v]>wt+1)
+                {
+                    dist[v] = wt+1;
+                    q.push({v,dist[v]});
+                    pred[v]=u;
+                }
             }
 
         }
@@ -48,6 +53,23 @@ public:
         for(auto d:dist)
             cout << d << "\t";
         cout << endl;
+
+        int crawl = dest;
+        vector<int> path;
+        path.push_back(crawl);
+        while(pred[crawl]!=-1)
+        {
+            path.push_back(pred[crawl]);
+            crawl = pred[crawl];
+        }
+
+        cout << "Shortest path between:src= " << src <<" and dest= "<< dest << "  ====>>>>\t" ;
+
+
+        for(int i=path.size()-1;i>=0;i--)
+            cout << path[i] << "\t";
+        cout << endl;
+
         return dist[dest];
 
     }
@@ -83,6 +105,6 @@ int main()
     g.addEdge(7,6);
 
     int res = g.findShortestDistance(0,7);
-    cout << "Shorest distance =" << res << endl;
+    cout << "Shortest distance =   " << res << endl;
     return 0;
 }
