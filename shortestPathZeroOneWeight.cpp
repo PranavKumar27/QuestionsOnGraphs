@@ -7,6 +7,9 @@
 
 using namespace std;
 
+// Time Complexity Using Dijakstra =  O(E + V Log V)
+// Time Complexity Using BFS =  O(E+V)
+
 typedef pair<int,int> _pair;
 
 class Graph
