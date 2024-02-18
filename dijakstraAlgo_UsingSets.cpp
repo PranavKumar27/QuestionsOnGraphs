@@ -1,102 +1,111 @@
 #include <iostream>
-#include <vector>
 #include <set>
+#include <vector>
 #include <limits.h>
-#define INF INT_MAX
 
 using namespace std;
 
-typedef pair<int,int> par;
+typedef pair<int,int> pairOfInt;
+
 class Graph
 {
     int V;
-    vector<vector<pair<int,int>>> Adj;
+    vector<vector<pairOfInt>> Adj;
     public:
-    Graph(int v)
-    {
-        V=v;
-        Adj.resize(V);
-    }
-    void addEdge(int u,int v,int wt)
-    {
-        Adj[u].push_back({v,wt});
-    }
-    // Shortest Path
-    void dijakstraAlgo(vector<int>& dist,int s)
-    {
-        set<par> St; // pair = wt,node  / Min Heap Priority Queue
-        St.insert({0,s});
-        dist[s]=0;
-
-        while(!St.empty())
+        Graph(int v)
         {
-            auto it=*(St.begin());
-            int weight = it.first;
-            int node = it.second;
-            cout << "\tweight=" << weight << " node=" << node << endl;
-            St.erase(it);
-
-            for(auto adjacent:Adj[node])
+            V=v;
+            Adj.resize(V);
+        }
+        void addEdge(int u,int v,int wt)
+        {
+            cout << __FUNCTION__ << endl;
+            Adj[u].push_back({v,wt});
+        }
+        void dijasktra(vector<int>& dist,int s)
+        {
+            set<pairOfInt> St;
+            St.insert({0,s});
+            dist[s] = 0;
+            while(!St.empty())
             {
-                int adjNode = adjacent.first;
-                int adjWeight = adjacent.second;
-                if(dist[adjNode]>weight+adjWeight)
+                // top Value
+                print_Set(St);
+                pairOfInt p = *(St.begin());
+                St.erase(p);
+                int weight = p.first;
+                int node = p.second;
+                cout << "Popped Node =" << node << "\t Popped Node Wt=" << weight << endl;
+
+                for( auto adjacent:Adj[node])
                 {
-                    if(dist[adjNode]!=INF)
+                    int adjacentNode = adjacent.first;
+                    int adjacentWt = adjacent.second;
+
+                    cout << "adjacentNode =" << adjacentNode << "\t adjacentWt=" << adjacentWt << endl;
+
+                    if(dist[adjacentNode]>adjacentWt+weight)
                     {
-                        St.erase({dist[adjNode],adjNode});
+                        if(dist[adjacentNode]!=INT_MAX)
+                        {
+                            St.erase({dist[adjacentNode],adjacentNode}); // Update old Entry of same distance,Node
+                        }
+                        dist[adjacentNode] = adjacentWt+weight;
+                        St.insert({dist[adjacentNode],adjacentNode});
                     }
-                    dist[adjNode] = weight+adjWeight;
-                    St.insert({dist[adjNode],adjNode});
                 }
             }
-
-
         }
-    }
+        void print_Set(set<pairOfInt> St)
+        {
+            cout << "----------" << endl;
+            for(auto s:St)
+            {
+                cout << "{ " << s.first << " , " << s.second << " }" << endl;
+            }
+            cout << "----------" << endl;
+        }
 };
 
-void print_v(vector<int> dist)
-{
-    for(auto x:dist)
-        cout << x << "\t";
-
-    cout << endl;
-}
 int main()
 {
-    int n = 6;
-    Graph g(n);
-    g.addEdge(0,1,4);
-    g.addEdge(0,2,4);
+    int V=6;
+    Graph G(V);
 
-    g.addEdge(2,0,4);
-    g.addEdge(1,2,2);
+    G.addEdge(0,1,2);
+    G.addEdge(0,2,3);
+    G.addEdge(0,5,10);
 
-    g.addEdge(2,0,4);
-    g.addEdge(2,1,2);
-    g.addEdge(2,3,3);
-    g.addEdge(2,4,1);
-    g.addEdge(2,5,6);
+    G.addEdge(1,0,2);
+    G.addEdge(1,3,3);
+    G.addEdge(1,2,4);
 
-    g.addEdge(3,2,3);
-    g.addEdge(3,5,2);
+    G.addEdge(2,0,3);
+    G.addEdge(2,1,4);
+    G.addEdge(2,4,8);
 
-    g.addEdge(4,2,1);
-    g.addEdge(4,5,3);
+    G.addEdge(3,1,3);
+    G.addEdge(3,4,2);
+    G.addEdge(3,5,5);
 
-    g.addEdge(5,3,2);
-    g.addEdge(5,2,6);
-    g.addEdge(5,4,3);
+    G.addEdge(4,2,8);
+    G.addEdge(4,3,2);
+    G.addEdge(4,5,1);
+
+    G.addEdge(5,0,10);
+    G.addEdge(5,3,5);
+    G.addEdge(5,4,1);
 
     vector<int> dist;
-    dist.resize(n,INF);
+    dist.resize(V,INT_MAX);
 
-    g.dijakstraAlgo(dist,0);
+    G.dijasktra(dist,0);
 
-    cout << "Shortest Path Traversal:\t";
-    print_v(dist);
-
-
+    for(auto d:dist)
+    {
+        cout << d << "\t";
+    }
+    cout << endl;
     return 0;
+
 }
