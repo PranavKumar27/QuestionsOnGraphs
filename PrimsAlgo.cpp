@@ -55,7 +55,8 @@ class Graph
             {
                 int v_wt = adjacent.second;
                 int v_node = adjacent.first;
-                pQ.push(make_tuple(v_wt,v_node,v));
+                if(visited[v_node]==false)
+                    pQ.push(make_tuple(v_wt,v_node,v));
             }
         }
 
