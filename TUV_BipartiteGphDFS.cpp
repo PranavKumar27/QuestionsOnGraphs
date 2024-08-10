@@ -43,11 +43,12 @@ public:
                 C[adjacent] = alternateColor;
                 return dfs(C,adjacent);
             }
-            else if(C[adjacent]==C[src])
+            if(C[adjacent]==C[src])
             {
                 return false;
             }
         }
+        return true
     }
 
 };
