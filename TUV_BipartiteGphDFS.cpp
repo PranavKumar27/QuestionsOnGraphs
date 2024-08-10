@@ -41,14 +41,13 @@ public:
             if(C[adjacent]==Blank)
             {
                 C[adjacent] = alternateColor;
-                dfs(C,adjacent);
+                return dfs(C,adjacent);
             }
             else if(C[adjacent]==C[src])
             {
-                return true;
+                return false;
             }
         }
-        return false;
     }
 
 };
