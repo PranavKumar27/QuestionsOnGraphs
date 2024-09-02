@@ -28,12 +28,13 @@ public:
     void bfs(int src,vector<int>& dist)
     {
         dist[src]=0;
-        queue<pair<int,int>> q; // dist,node
+        typedef pair<int,int> DataType;
+        priority_queue< DataType, vector<DataType>, greater<DataType> > q; // dist,node
         q.push({0,src});
 
         while(!q.empty())
         {
-            pair<int,int> p = q.front();
+            pair<int,int> p = q.top();
             q.pop();
             int u = p.second;
             int wt = p.first;
