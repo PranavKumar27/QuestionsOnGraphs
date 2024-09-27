@@ -1,3 +1,17 @@
+/*
+A tree which has N nodes and N-1 Edges and all Nodes are reachable form each other.
+Everyone is connected to each other
+Every node is in a single component
+A Graph can have multiple Spanning Trees
+No restriction on the count of Spanning Trees
+
+Draw all the Spanning Tree possible form a Graph and then sum all the edge weights in the Graph.
+Once a Graph has the sum of all the edge weights as Minimum, that Graph is Minimum Spanning Tree
+
+A Graph can have several Spanning Tree but may have only one Minimum Spanning Tree
+*/
+
+
 #include <iostream>
 #include <vector>
 #include <queue>
