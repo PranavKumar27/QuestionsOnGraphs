@@ -74,12 +74,12 @@ public:
 int findMstUsingUnionFind_KRUSKAL(VPairOfInt& MSTLIST,VPairOfPairOfInt EDGELIST)
 {
     Union_Find unionSet(7);
-
+    // T.c = M Long N
     // Sort EdgeList with Weights
     sort(EDGELIST.begin(),EDGELIST.end());
 
     int sum = 0;
-
+    // Tc = M * 4 Alpha * 2
     for(auto elist:EDGELIST )
     {
         int wt = elist.first;
