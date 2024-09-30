@@ -2,6 +2,7 @@
 #include <vector>
 
 using namespace std;
+// Time Complexity : Const 4-Alpha
 
 class Union_Find
 {
