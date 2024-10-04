@@ -79,11 +79,16 @@ bool IsValid(int r,int c,int row_sz,int col_sz)
     }
 }
 /*
-                                {1,0,1,1,1},
+                                        {1,0,1,1,1},
                                         {1,1,0,1,1},
                                         {1,1,0,0,1},
                                         {0,0,1,1,0},
                                         {1,1,1,1,1}
+
+                                        {
+                                            {1,1},
+                                            {1,1}
+                                        }
 */
 int main()
 {
@@ -140,6 +145,7 @@ int main()
 
     int Total_max = INT_MIN;
     int Final_node;
+    bool NoWater = false;
 
     for(int i=0;i<row;i++)
     {
@@ -160,7 +166,7 @@ int main()
                      {
                         int connected_node = n_row*row+n_col;
                         int p2 = S.findParent(connected_node);
-
+                        NoWater = true;
                         Set.insert(p2);
 
                         cout << "inserting in Set row =" << n_row << " col=" << n_col << " connected_node=" << connected_node << endl;
@@ -197,6 +203,10 @@ int main()
                      Final_node = node;
                  }
             }
+            else if(!NoWater)
+            {
+                Total_max = S.sizes[0];
+            }
         }
     }
 
@@ -206,5 +216,3 @@ int main()
     cout << "row =" << Final_node/row << " col=" << Final_node%row;
     return 0;
 }
-
-
