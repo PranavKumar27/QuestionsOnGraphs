@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <map>
 
 using namespace std;
 
@@ -63,6 +64,7 @@ int findMaxNoOfStonesToBeRemoved(vector<vector<int>> Stones)
     union_Set S(totalNodes);
 
     int totalStones = 0;
+    map<int,int> Stones_index;
     for(int i=0;i<row;i++)
     {
         for(int j=0;j<col;j++)
@@ -72,6 +74,8 @@ int findMaxNoOfStonesToBeRemoved(vector<vector<int>> Stones)
                 ++totalStones;
                 int node = j+row;
                 S.unionBySize(i,node);
+                Stones_index[node] = 1;
+                Stones_index[i] = 1;
             }
         }
     }
@@ -79,11 +83,23 @@ int findMaxNoOfStonesToBeRemoved(vector<vector<int>> Stones)
     // Find Ultimate Parents with size > 1
     int totalConnectedComponents =0;
 
+    /*
+    Technique 1
     for(int i=0;i<totalNodes;i++)
     {
         if(S.parent[i]==i && S.sizes[i]>1)
         {
             ++totalConnectedComponents;
+        }
+    }
+    */
+
+    /// Technique 2
+    for(auto d:Stones_index)
+    {
+        if(S.findParent(d.first)==d.first)
+        {
+           ++totalConnectedComponents;
         }
     }
 
