@@ -25,6 +25,8 @@ Steps in ALgo:
 Sort the edges according to the finishing time when dfs is performed
 Reverse the Graph
 Do a dfs on each Sorted elements list
+
+TC = O(E+v) for dfs and same for Algo
 */
 class Graph
 {
@@ -47,15 +49,15 @@ class Graph
         if(!visited[src])
         {
             visited[src]=1;
-
-            for(auto adj:Adj[src])
-            {
-                //cout << "Calling DFS(" << adj << ")" << endl;
-                dfs(adj,S,visited);
-            }
-            S.push(src);
-            //cout << "Pushing Adj =" << src << endl;
         }
+
+        for(auto adj:Adj[src])
+        {
+            //cout << "Calling DFS(" << adj << ")" << endl;
+            dfs(adj,S,visited);
+        }
+        S.push(src);
+        //cout << "Pushing Adj =" << src << endl;
     }
 };
 
